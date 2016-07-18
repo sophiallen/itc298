@@ -30,7 +30,6 @@ http.createServer(function(req, res){
 			serveStatic(res, '/public/home.html', 'text/html');
 			break;
 		case '/about':
-			//send text file (to show that I can).
 			serveStatic(res, '/public/about.html', 'text/html');
 			break;
 		default: 
