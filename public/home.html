@@ -15,7 +15,7 @@
 				background-color: white;
 				padding: 1em;
 			}
-			h1, p {
+			h1, p, form {
 				font-family: Calibri;
 			}
 		</style>
@@ -26,5 +26,11 @@
 		<p>Welcome to my simple static server!</p>
 		<p><a href="about.html">Go to about page</a></p>
 		<p><a href="thisIsNotThePageYoureLookingFor">Try a page that doesn't exist</a></p>
+
+		<form name="find_language" action="search" method="post">
+			<label>Search Supported Languages</label>
+			<input type="text" name="search_term"/>
+			<input type="submit" value="search!"/>
+		</form>
 	</body>
 </html>
