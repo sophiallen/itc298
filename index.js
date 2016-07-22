@@ -1,7 +1,7 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
-var findLanguage = require('./components/searchLanguages.js');
+var languageList = require('./components/languageList.js');
 
 var app = new express();
 
@@ -33,10 +33,14 @@ app.post('/search', function(req, res){
 	var searchTerm = req.body.search_term;
 	
 	var header = 'Searching for: ' + searchTerm + '<br/>';
-	var searchResult = findLanguage(searchTerm);
+
+	var successfulAdd = languageList.deleteLang('english');
+	console.log('languages: ' + languageList.getAllLangs());
+
+	var searchResult = languageList.searchSupported(searchTerm);
 
 	res.status(200).send(header + searchResult);
-})
+});
 
 //handle 404 errors
 app.use(function(req, res){
