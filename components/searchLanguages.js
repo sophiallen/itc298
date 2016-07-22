@@ -1,21 +1,25 @@
 
-var languageList = ['english', 'spanish', 'french',
-					 'tagalog', 'russian', 'mandarin',
-					 'arabic', 'ukranian', 'vietnamese'];
+// var languageList = ['english', 'spanish', 'french',
+// 					 'tagalog', 'russian', 'mandarin',
+// 					 'arabic', 'ukranian', 'vietnamese'];
+ 
+var languageList = [
+	{'name' : 'english', 'engine': 'yandex'}, 
+	{'name': 'somali', 'engine': 'google translate'},
+	{'name': 'tagalog', 'engine': 'yandex'},
+	{'name': 'russian', 'engine': 'yandex'}
+	];
 
 
-//add method for easy lang capitalization
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-//returns search results as a string.
 module.exports = function(requestedLang){
-	var requested = requestedLang.toLowerCase();
-	var indexFound = languageList.indexOf(requested);
-	if (indexFound == -1){
-		return "Sorry, that language is not currently supported";
+	var requested = requestedLang.toLowerCase().trim();
+	var found = languageList.find(function(lang){
+		return lang.name == requested;
+	});
+
+	if (found){
+		return '<p><strong>' +  requestedLang + '</strong> is supported! </p><p> Using the: ' + found.engine + ' engine</p>';
 	} else {
-		return languageList[indexFound].capitalize() + ' is supported!';
+		return '<p> Sorry, that language is not currently supported by our app. </p>'
 	}
 }

@@ -31,9 +31,10 @@ app.get('/about', function(req, res){
 app.post('/search', function(req, res){
 	res.type('text/html');
 	var searchTerm = req.body.search_term;
+	
 	var header = 'Searching for: ' + searchTerm + '<br/>';
 	var searchResult = findLanguage(searchTerm);
-	console.log(searchResult);
+
 	res.status(200).send(header + searchResult);
 })
 
