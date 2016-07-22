@@ -57,31 +57,3 @@ module.exports = {
 		return success;
 	}
 }
-
-// module.exports = {
-// , 
-
-// 	//Function to create and return string that describes whether and how a language currently is supported.
-// 	searchSupported : function(requestedLang){
-// 		var requested = requestedLang.toLowerCase().trim();
-// 		var found = languages.find(function(lang){
-// 			return lang.name == requested;
-// 		});
-
-// 		if (found){
-// 			return '<p><strong>' +  requestedLang + '</strong> is supported! </p><p> Using the: ' + found.engine + ' engine</p>';
-// 		} else {
-// 			return '<p> Sorry, that language is not currently supported by our app. </p>'
-// 		}
-// 	}, 
-
-// 	//returns string 
-// 	getAllLangs : function(){
-// 		var listOfLangs = "";
-// 		this.languages.forEach(function(lang){
-// 			console.log(lang.name);
-// 			listOfLangs += lang.name + ' ';
-// 		});
-// 		return listOfLangs;
-// 	}
-// }
