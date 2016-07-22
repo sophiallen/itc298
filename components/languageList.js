@@ -30,12 +30,28 @@ module.exports = {
 		return listOfLangs;
 	}, 
 
+	//returns number of languages currently supported.
+	getNumLangs: function(){
+		return languages.length;
+	},
+
 	//Adds language to the list, returns true on success.
 	addLang: function(name, engine){
 		var oldLength = languages.length;
-		var newLang = {'name': name, 'engine': engine};
-		var newLength = languages.push(newLang);
-		return newLength > oldLength;
+		var newLang = {'name': name.toLowerCase(), 'engine': engine};
+
+		//check to make sure language isn't already on the list.
+		var alreadyExists = languages.find(function(item){
+			return item.name == name;
+		});
+
+		//add and check new list length to measure success, else return false 
+		if (!alreadyExists){
+			var newLength = languages.push(newLang);
+			return newLength > oldLength;
+		} else { //language has already been added.
+			return false;
+		}
 	},
 
 	deleteLang: function(lang){
@@ -45,7 +61,7 @@ module.exports = {
 		//remember length of list before attempting delete.
 		var oldLength = languages.length;
 
-		//loop through list, delete any that match (in case of duplicates)
+		//loop through list, delete any that match (in unlikely case of duplicates)
 		languages.forEach(function(item, index){
 			if (item.name == lang){
 				languages.splice(index, 1);

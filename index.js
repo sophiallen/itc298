@@ -35,7 +35,7 @@ app.post('/search', function(req, res){
 	var header = 'Searching for: ' + searchTerm + '<br/>';
 
 	//test new languagelist methods, print results in console...
-	var success = languageList.deleteLang('english');
+	var success = languageList.addLang('english', 'yandex');
 	console.log(success, 'languages: ' + languageList.getAllLangs());
 
 	var searchResult = languageList.searchSupported(searchTerm);
