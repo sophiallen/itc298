@@ -9,6 +9,6 @@
   "author": "Sophia Allen",
   "license": "ISC",
   "dependencies": {
-    "http": "0.0.0"
+    "body-parser": "^1.15.2",
   }
 }
