@@ -20,19 +20,13 @@ module.exports = {
 		}
 	},	
 
-	//returns string of all supported languages
-	getAllLangs: function(){
-		var listOfLangs = "";
-		languages.forEach(function(lang){
-			var capitalizedLang = lang.name.charAt(0).toUpperCase() + lang.name.slice(1) ;
-			listOfLangs += capitalizedLang + '\n';
+	//returns array of language names
+	getLangNames: function(){
+		var langs = languages.map(function(lang){
+			return lang.name;
 		});
-		return listOfLangs;
-	}, 
 
-	//returns number of languages currently supported.
-	getNumLangs: function(){
-		return languages.length;
+		return langs;
 	},
 
 	//Adds language to the list, returns true on success.
@@ -70,6 +64,23 @@ module.exports = {
 
 		//compare to prior list length to see if deletion was successful. 
 		var success = languages.length < oldLength;
+		return success;
+	}, 
+
+	//updates the engine used to support a language. Returns true on success.
+	updateLang: function(lang, newName, newEngine){
+		lang = lang.toLowerCase();
+
+		var success = false;
+
+		languages.forEach(function(item){
+			if (item.name == lang){
+				item.name = newName.toLowerCase();
+				item.engine = newEngine;
+				success = true;
+			}
+		});
+
 		return success;
 	}
 }
