@@ -1,17 +1,11 @@
-
-// var languageList = ['english', 'spanish', 'french',
-// 					 'tagalog', 'russian', 'mandarin',
-// 					 'arabic', 'ukranian', 'vietnamese'];
- 
-var languageList = [
+module.exports = function(requestedLang){
+	var languageList = [
 	{'name' : 'english', 'engine': 'yandex'}, 
 	{'name': 'somali', 'engine': 'google translate'},
 	{'name': 'tagalog', 'engine': 'yandex'},
 	{'name': 'russian', 'engine': 'yandex'}
 	];
 
-
-module.exports = function(requestedLang){
 	var requested = requestedLang.toLowerCase().trim();
 	var found = languageList.find(function(lang){
 		return lang.name == requested;
