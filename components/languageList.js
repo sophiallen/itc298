@@ -67,7 +67,7 @@ module.exports = {
 		return success;
 	}, 
 
-	//updates the engine used to support a language. Returns true on success.
+	///updates the engine used to support a language. Returns true on success.
 	updateLang: function(lang, newName, newEngine){
 		lang = lang.toLowerCase();
 

@@ -84,7 +84,7 @@ app.post('/updateLang', function(req, res) {
 	}
 });
 
-//handle 404 errors
+///handle 404 errors
 app.use(function(req, res){
 	res.type('text/plain');
 	res.status(404).send('404 - file not found :(');
