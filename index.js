@@ -31,16 +31,57 @@ app.get('/about', function(req, res){
 app.post('/search', function(req, res){
 	res.type('text/html');
 	var searchTerm = req.body.search_term;
-	
-	var header = 'Searching for: ' + searchTerm + '<br/>';
 
-	//test new languagelist methods, print results in console...
-	var success = languageList.updateLang('english','english-usa' ,'bing');
-	console.log(success, 'languages: ' + languageList.getLangNames());
+	var header = 'Searching for: ' + searchTerm + '<br/>';
+	var footer = '<a href="home.html">Return to home page.</a>'
 
 	var searchResult = languageList.searchSupported(searchTerm);
 
-	res.status(200).send(header + searchResult);
+	res.status(200).send(header + searchResult + footer);
+});
+
+
+app.post('/addLang', function(req, res){
+	res.type('text/html');
+	var langName = req.body.lang_name;
+	var langEngine = req.body.engine;
+	var success = languageList.addLang(langName, langEngine);
+	var footer = '<a href="home.html">Return to home page.</a>'
+
+	if (success){
+		res.status(200).send('Successfully added ' + langName + ' to our list of supported languages. ' + footer);
+	} else {
+		res.status(200).send('An error occurred, unable to add language to our list. Check that the language you tried to add is not already on our list.' + footer);
+	}
+});
+
+app.post('/deleteLang', function(req, res){
+	res.type('text/html');
+	var langName = req.body.lang_name;
+	var success = languageList.deleteLang(langName);
+	var footer = '<a href="home.html">Return to home page.</a>'
+
+	if (success){
+		res.status(200).send('Successfully deleted ' + langName + ' from our list of supported languges. ' + footer);
+	} else {
+		res.status(200).send('Unable to delete ' + langName + '. Check that the language exists in our list of languages. ' + footer);
+	}
+});
+
+app.post('/updateLang', function(req, res) {
+	res.type('text/html');
+	var langName = req.body.lang_name;
+	var newName = req.body.new_name;
+	var newEngine = req.body.new_engine;
+
+	var success = languageList.updateLang(langName, newName, newEngine);
+	var footer = '<a href="home.html">Return to home page.</a>';
+
+	if (success) {
+	res.status(200).send("Successfully updated our records of " + newName + '.' + footer);
+	} else {
+		res.status(200).send("An error occurred. Check that " + langName + " exists in our records. " + footer);
+	}
 });
 
 //handle 404 errors
