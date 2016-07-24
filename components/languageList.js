@@ -57,9 +57,9 @@ module.exports = {
 		var oldLength = this.languages.length;
 
 		//loop through list, delete any that match (in unlikely case of duplicates)
-		this.languages.forEach(function(item, index){
+		this.languages.forEach(function(item, index, langs){
 			if (item.name == lang){
-				this.languages.splice(index, 1);
+				langs.splice(index, 1);
 			}
 		});
 
