@@ -2,8 +2,16 @@ var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
 var languageList = require('./components/languageList.js');
+var handlebars = require('express-handlebars').create({defaultLayout: 'main', extname: '.hbs'});
 
 var app = new express();
+
+//set handlebars as templating engine
+var viewsPath = __dirname + '/../views';  
+var handlebars = require('express-handlebars').create({defaultLayout: 'main', extname: '.hbs',layoutsDir: viewsPath + '/layouts', partialsDir: viewsPath + '/partials' });
+app.engine('hbs', handlebars.engine);
+app.set('views', viewsPath );
+app.set('view engine', 'hbs');
 
 //use environment port or default to port 3000
 app.set('port', process.env.PORT || 3000);
@@ -14,14 +22,13 @@ app.use(express.static('public'));
 //body parser for url query strings
 app.use(bodyParser.urlencoded({extended: true}));
 
-//home page
+/** ROUTES **/
 app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/html');
 	var options = {root: __dirname + '/public'};
 	res.status(200).sendFile('home.html', options);
 });
 
-//about page
 app.get('/about', function(req, res){
 	res.type('text/html');
 	var options = {root: __dirname + '/public'};
@@ -91,11 +98,7 @@ app.use(function(req, res){
 });
 
 
-//start server
+/**START SERVER**/
 app.listen(app.get('port'), function(){
 	console.log('express server started');
 });
-
-
-
-

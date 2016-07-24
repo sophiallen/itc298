@@ -1,15 +1,16 @@
-var languages = [
+
+module.exports = {
+	languages : [
 	{'name' : 'english', 'engine': 'yandex'}, 
 	{'name': 'somali', 'engine': 'google translate'},
 	{'name': 'tagalog', 'engine': 'yandex'},
 	{'name': 'russian', 'engine': 'yandex'}
-	];
+	],
 
-module.exports = {
 	//Function to create and return string that describes whether and how a language currently is supported.
 	searchSupported : function(requestedLang){
 		var requested = requestedLang.toLowerCase().trim();
-		var found = languages.find(function(lang){
+		var found = this.languages.find(function(lang){
 			return lang.name == requested;
 		});
 
@@ -22,7 +23,7 @@ module.exports = {
 
 	//returns array of language names
 	getLangNames: function(){
-		var langs = languages.map(function(lang){
+		var langs = this.languages.map(function(lang){
 			return lang.name;
 		});
 
@@ -31,17 +32,17 @@ module.exports = {
 
 	//Adds language to the list, returns true on success.
 	addLang: function(name, engine){
-		var oldLength = languages.length;
+		var oldLength = this.languages.length;
 		var newLang = {'name': name.toLowerCase(), 'engine': engine};
 
 		//check to make sure language isn't already on the list.
-		var alreadyExists = languages.find(function(item){
+		var alreadyExists = this.languages.find(function(item){
 			return item.name == name;
 		});
 
 		//add and check new list length to measure success, else return false 
 		if (!alreadyExists){
-			var newLength = languages.push(newLang);
+			var newLength = this.languages.push(newLang);
 			return newLength > oldLength;
 		} else { //language has already been added.
 			return false;
@@ -53,17 +54,17 @@ module.exports = {
 		lang = lang.toLowerCase();
 
 		//remember length of list before attempting delete.
-		var oldLength = languages.length;
+		var oldLength = this.languages.length;
 
 		//loop through list, delete any that match (in unlikely case of duplicates)
-		languages.forEach(function(item, index){
+		this.languages.forEach(function(item, index){
 			if (item.name == lang){
-				languages.splice(index, 1);
+				this.languages.splice(index, 1);
 			}
 		});
 
 		//compare to prior list length to see if deletion was successful. 
-		var success = languages.length < oldLength;
+		var success = this.languages.length < oldLength;
 		return success;
 	}, 
 
@@ -73,7 +74,7 @@ module.exports = {
 
 		var success = false;
 
-		languages.forEach(function(item){
+		this.languages.forEach(function(item){
 			if (item.name == lang){
 				item.name = newName.toLowerCase();
 				item.engine = newEngine;
