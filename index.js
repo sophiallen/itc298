@@ -1,32 +1,36 @@
 var http = require('http');
 var express = require('express');
 var bodyParser = require('body-parser');
-var languageList = require('./components/languageList.js');
-var handlebars = require('express-handlebars').create({defaultLayout: 'main', extname: '.hbs'});
+var languageList = require('./lib/languageList.js');
+var handlebars = require('express-handlebars');
 
 var app = new express();
 
+//configure app
+app.set('port', process.env.PORT || 3000);
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({extended: true}));
+
+
 //set handlebars as templating engine
-var viewsPath = __dirname + '/../views';  
-var handlebars = require('express-handlebars').create({defaultLayout: 'main', extname: '.hbs',layoutsDir: viewsPath + '/layouts', partialsDir: viewsPath + '/partials' });
-app.engine('hbs', handlebars.engine);
+var viewsPath = __dirname + '/views';
+var hbs = handlebars.create({
+	defaultLayout: 'main', 
+	layoutsDir: viewsPath + '/layouts',
+	extname: '.hbs'});
+
+app.engine('hbs', hbs.engine);
 app.set('views', viewsPath );
 app.set('view engine', 'hbs');
 
-//use environment port or default to port 3000
-app.set('port', process.env.PORT || 3000);
 
-//use public folder to serve static files
-app.use(express.static('public'));
-
-//body parser for url query strings
-app.use(bodyParser.urlencoded({extended: true}));
 
 /** ROUTES **/
 app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/html');
-	var options = {root: __dirname + '/public'};
-	res.status(200).sendFile('home.html', options);
+	// var options = {root: __dirname + '/public'};
+	// res.status(200).sendFile('home.html', options);
+	res.render('home', {langs: languageList.getLangNames()});
 });
 
 app.get('/about', function(req, res){
