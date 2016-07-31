@@ -1,2 +1,21 @@
 <h1>Example App: Home</h1>
-<p>{{{langs}}}</p>
+
+<h3>Languages we currently support:</h1>
+<ul>
+	{{#each langs}}
+	<li><a href="languages/{{this}}">{{this}}</a></li>
+	{{/each}}
+</ul>
+<form name="find_language" action="search" method="post">
+	<legend>Find Language Details</legend>
+	<input id="search_term" type="text" name="search_term"/>
+	<input id="searchBtn" type="submit" value="search"/>
+</form>
+<form name="add_language" action="addLang" method="post">
+	<legend>Add new language</legend>
+	<label>Languge Name</label>
+	<input id="lang_name" name="lang_name" type="text"/>
+	<label>Language Engine</label>
+	<input id="engine" name="engine" type="text"/>
+	<input type="submit" value="Add New Language"/>
+</form>

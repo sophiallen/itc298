@@ -31,7 +31,7 @@ app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/html');
 	// var options = {root: __dirname + '/public'};
 	// res.status(200).sendFile('home.html', options);
-	res.render('home', {langs: languageList.getLangNames()});
+	res.render('home', {title: 'Main', langs: languageList.getAllLangs()});
 });
 
 app.get('/about', function(req, res){
@@ -45,7 +45,7 @@ app.post('/search', function(req, res){
 	var searchTerm = req.body.search_term;
 
 	var header = 'Searching for: ' + searchTerm + '<br/>';
-	var footer = '<a href="home.html">Return to home page.</a>'
+	var footer = '<a href="/">Return to home page.</a>'
 
 	var searchResult = languageList.searchSupported(searchTerm);
 
@@ -58,7 +58,7 @@ app.post('/addLang', function(req, res){
 	var langName = req.body.lang_name;
 	var langEngine = req.body.engine;
 	var success = languageList.addLang(langName, langEngine);
-	var footer = '<a href="home.html">Return to home page.</a>'
+	var footer = '<a href="/">Return to home page.</a>'
 
 	if (success){
 		res.status(200).send('Successfully added ' + langName + ' to our list of supported languages. ' + footer);
@@ -71,7 +71,7 @@ app.post('/deleteLang', function(req, res){
 	res.type('text/html');
 	var langName = req.body.lang_name;
 	var success = languageList.deleteLang(langName);
-	var footer = '<a href="home.html">Return to home page.</a>'
+	var footer = '<a href="/">Return to home page.</a>'
 
 	if (success){
 		res.status(200).send('Successfully deleted ' + langName + ' from our list of supported languges. ' + footer);
@@ -87,7 +87,7 @@ app.post('/updateLang', function(req, res) {
 	var newEngine = req.body.new_engine;
 
 	var success = languageList.updateLang(langName, newName, newEngine);
-	var footer = '<a href="home.html">Return to home page.</a>';
+	var footer = '<a href="/">Return to home page.</a>';
 
 	if (success) {
 	res.status(200).send("Successfully updated our records of " + newName + '.' + footer);
