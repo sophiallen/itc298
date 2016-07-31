@@ -17,6 +17,7 @@ var viewsPath = __dirname + '/views';
 var hbs = handlebars.create({
 	defaultLayout: 'main', 
 	layoutsDir: viewsPath + '/layouts',
+	partialsDir: viewsPath + '/partials',
 	extname: '.hbs'});
 
 app.engine('hbs', hbs.engine);
