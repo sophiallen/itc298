@@ -34,28 +34,28 @@ app.get('/', function(req, res){
 		var changeData = {
 			'color' : req.session.feedback.success? 'lightgreen' : 'lightpink',
 			'msg' : req.session.feedback.msg
-		}
+		};
 
 		//clear any feedback
 		req.session.feedback = null;
 	}
-	res.render('home', {title: 'Main', langs: languageList.getAllLangs(), 'changes': changeData});
+
+	res.render('home', {title: 'Main', langs: languageList.getAllLangs(), changes: changeData});
 });
 
 //Detail Page
 app.get('/languages/:lang', function(req, res){
 	var lang = req.params.lang;
 	var searchResult = languageList.getLangDetail(lang);
-	res.render('detail', {title: lang, language: searchResult});
+	if (req.session.feedback){
+		var changeData = {
+			'color': req.session.feedback.success ? 'lightgreen': 'lightpink',
+			'msg': req.session.feedback.msg
+		}
+		req.session.feedback = null;
+	}
+	res.render('detail', {title: lang, language: searchResult, changes: changeData});
 });
-
-//About the app page
-// app.get('/about', function(req, res){
-// 	res.type('text/html');
-// 	var options = {root: __dirname + '/public'};
-// 	res.status(200).sendFile('about.html', options);
-// });
-
 
 app.post('/search', function(req, res){
 	res.type('text/html');
@@ -63,7 +63,6 @@ app.post('/search', function(req, res){
 	var searchResult = languageList.getLangDetail(searchTerm);
 	if (searchResult){
 		res.redirect('/languages/' + searchResult.name);
-		req.session.feedback = false;
 	} else {
 		req.session.feedback = {'success': false, 'msg' : 'unable to find ' + searchTerm + ' in our records.'};
 		res.redirect('/');
@@ -79,24 +78,25 @@ app.post('/addLang', function(req, res){
 	var footer = '<a href="/">Return to home page.</a>'
 
 	if (success){
-		res.status(200).send('Successfully added ' + langName + ' to our list of supported languages. ' + footer);
+		req.session.feedback = {'success': true, 'msg': 'successfully added ' + langName + ' to our records.'};
 	} else {
-		res.status(200).send('An error occurred, unable to add language to our list. Check that the language you tried to add is not already on our list.' + footer);
+		req.session.feedback = {'success': false, 'msg': 'Error: unable to add ' + langName + 'to our records. Check to make sure it has not already been added.'};
 	}
+
+	res.redirect('/');
 });
 
 app.post('/languages/delete/:lang', function(req, res){
 	res.type('text/html');
 	var langName = req.params.lang;
 	var success = languageList.deleteLang(langName);
-	var footer = '<a href="/">Return to home page.</a>'
 
 	if (success){
-		console.log("successful deleted: " + langName);
-		res.status(200).redirect('/');
+		req.session.feedback = {'success': true, 'msg': 'successfully deleted ' + langName + ' from our records.'};
 	} else {
-		res.status(200).send('Unable to delete ' + langName + '. Check that the language exists in our list of languages. ' + footer);
+		req.session.feedback = {'success': false, 'msg': 'unable to delete ' + langName + ' from our records. Check to make sure that it is on our list of supported languages.'};
 	}
+	res.redirect('/');
 });
 
 app.post('languages/:language/updateLang', function(req, res) {
@@ -109,13 +109,20 @@ app.post('languages/:language/updateLang', function(req, res) {
 	var users = req.body.new_userNum;
 
 	var success = languageList.updateLang(langName, newName, newEngine, users);
-	var footer = '<a href="/">Return to home page.</a>';
 
 	if (success) {
-	res.status(200).send("Successfully updated our records of " + newName + '.' + footer);
+		req.session.feedback = {'success': true, 'msg': "This language's information has been successfully updated."};
 	} else {
-		res.status(200).send("An error occurred. Check that " + langName + " exists in our records. " + footer);
+		req.session.feedback = {'success': false, 'msg': 'An error occurred, unable to update language details.'};
 	}
+	res.redirect('back');
+});
+
+//About the app page
+app.get('/about', function(req, res){
+	res.type('text/html');
+	var options = {root: __dirname + '/public'};
+	res.status(200).sendFile('about.html', options);
 });
 
 ///handle 404 errors
