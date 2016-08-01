@@ -64,7 +64,7 @@ app.post('/search', function(req, res){
 	if (searchResult){
 		res.redirect('/languages/' + searchResult.name);
 	} else {
-		req.session.feedback = {'success': false, 'msg' : 'unable to find ' + searchTerm + ' in our records.'};
+		req.session.feedback = {'success': false, 'msg' : 'Unable to find ' + searchTerm + ' in our records.'};
 		res.redirect('/');
 	}
 });
@@ -78,7 +78,7 @@ app.post('/addLang', function(req, res){
 	var footer = '<a href="/">Return to home page.</a>'
 
 	if (success){
-		req.session.feedback = {'success': true, 'msg': 'successfully added ' + langName + ' to our records.'};
+		req.session.feedback = {'success': true, 'msg': 'Successfully added ' + langName + ' to our records.'};
 	} else {
 		req.session.feedback = {'success': false, 'msg': 'Error: unable to add ' + langName + 'to our records. Check to make sure it has not already been added.'};
 	}
@@ -92,14 +92,14 @@ app.post('/languages/delete/:lang', function(req, res){
 	var success = languageList.deleteLang(langName);
 
 	if (success){
-		req.session.feedback = {'success': true, 'msg': 'successfully deleted ' + langName + ' from our records.'};
+		req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + langName + ' from our records.'};
 	} else {
 		req.session.feedback = {'success': false, 'msg': 'unable to delete ' + langName + ' from our records. Check to make sure that it is on our list of supported languages.'};
 	}
 	res.redirect('/');
 });
 
-app.post('languages/:language/updateLang', function(req, res) {
+app.post('/languages/update/:language', function(req, res) {
 	res.type('text/html');
 	var langName = req.params.language;
 	console.log(langName);
@@ -112,23 +112,21 @@ app.post('languages/:language/updateLang', function(req, res) {
 
 	if (success) {
 		req.session.feedback = {'success': true, 'msg': "This language's information has been successfully updated."};
+		res.redirect('/languages/' + newName);
 	} else {
 		req.session.feedback = {'success': false, 'msg': 'An error occurred, unable to update language details.'};
+		res.redirect('back');
 	}
-	res.redirect('back');
 });
 
 //About the app page
 app.get('/about', function(req, res){
-	res.type('text/html');
-	var options = {root: __dirname + '/public'};
-	res.status(200).sendFile('about.html', options);
+	res.render('about', {title: 'About'});
 });
 
 ///handle 404 errors
 app.use(function(req, res){
 	res.type('text/plain');
-	console.log(req.params);
 	res.status(404).send('404 - file not found :(');
 });
 
