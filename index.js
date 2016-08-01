@@ -15,18 +15,14 @@ app.use(session({secret: 'taco cat'}));
 
 //set handlebars as templating engine
 var viewsPath = __dirname + '/views';
-var hbs = handlebars.create({
-	defaultLayout: 'main', 
-	layoutsDir: viewsPath + '/layouts',
-	partialsDir: viewsPath + '/partials',
-	extname: '.hbs'
-});
-
+var hbs = handlebars.create({ defaultLayout: 'main', layoutsDir: viewsPath + '/layouts', partialsDir: viewsPath + '/partials', extname: '.hbs'});
 app.engine('hbs', hbs.engine);
 app.set('views', viewsPath );
 app.set('view engine', 'hbs');
 
 /** ROUTES **/
+
+//Main page
 app.get('/', function(req, res){
 	res.setHeader('Content-Type', 'text/html');
 
@@ -57,10 +53,12 @@ app.get('/languages/:lang', function(req, res){
 	res.render('detail', {title: lang, language: searchResult, changes: changeData});
 });
 
+//search requests, redirects to results or back to home page with and error message.
 app.post('/search', function(req, res){
 	res.type('text/html');
 	var searchTerm = req.body.search_term;
 	var searchResult = languageList.getLangDetail(searchTerm);
+
 	if (searchResult){
 		res.redirect('/languages/' + searchResult.name);
 	} else {
@@ -69,7 +67,7 @@ app.post('/search', function(req, res){
 	}
 });
 
-
+//Add language requests, redirects back to home page with error/success message.
 app.post('/addLang', function(req, res){
 	res.type('text/html');
 	var langName = req.body.lang_name;
@@ -86,6 +84,7 @@ app.post('/addLang', function(req, res){
 	res.redirect('/');
 });
 
+//Delete language requests, redirect to home page with success/error message.
 app.post('/languages/delete/:lang', function(req, res){
 	res.type('text/html');
 	var langName = req.params.lang;
@@ -99,6 +98,7 @@ app.post('/languages/delete/:lang', function(req, res){
 	res.redirect('/');
 });
 
+//update requests redirect to referring page, or to newly updated language details page, with success/error message.
 app.post('/languages/update/:language', function(req, res) {
 	res.type('text/html');
 	var langName = req.params.language;
