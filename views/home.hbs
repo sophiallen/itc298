@@ -1,5 +1,7 @@
 <h1>Example App: Home</h1>
-
+{{#if changes}}
+<div id="changes" style="background-color:{{{changes.color}}}" >{{changes.msg}}</div>
+{{/if}}
 <h3>Languages we currently support:</h1>
 <ul>
 	{{#each langs}}
