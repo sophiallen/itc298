@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var languageList = require('./lib/languageList.js');
 var handlebars = require('express-handlebars');
 var session = require('express-session');
+var mongoose = require('mongoose');
 
 var app = new express();
 
@@ -13,6 +14,10 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(session({secret: 'taco cat'}));
 app.use('/api', require('cors')());
+
+//connect to mongodb
+var connectionString = 'mongodb://<username>:<password>@ds145245.mlab.com:45245/itc298';
+mongoose.connect(connectionString);
 
 //set handlebars as templating engine
 var viewsPath = __dirname + '/views';
