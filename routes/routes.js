@@ -24,30 +24,25 @@ module.exports = function(app){
 
 	//Detail Page
 	app.get('/languages/:lang', function(req, res){
-		var lang = req.params.lang;
-		var searchResult = languageList.getLangDetail(lang);
+
+		var changeData = null;
+
+		//format feedback if any was given. 
 		if (req.session.feedback){
-			var changeData = {
+			changeData = {
 				'color': req.session.feedback.success ? 'lightgreen': 'lightpink',
 				'msg': req.session.feedback.msg
 			}
 			req.session.feedback = null;
 		}
-		res.render('detail', {title: lang, language: searchResult, changes: changeData});
+
+		languagesCtrl.getDetail(req, res, req.params.lang, changeData);
+
 	});
 
-	//Search requests, redirects to results or back to home page with and error message.
+	//Search requests, redirects to detail view or back to home page with and error message.
 	app.post('/search', function(req, res){
-		res.type('text/html');
-		var searchTerm = req.body.search_term;
-		var searchResult = languageList.getLangDetail(searchTerm);
-
-		if (searchResult){
-			res.redirect('/languages/' + searchResult.name);
-		} else {
-			req.session.feedback = {'success': false, 'msg' : 'Unable to find ' + searchTerm + ' in our records.'};
-			res.redirect('/');
-		}
+		languagesCtrl.getDetail(req, res, req.body.search_term, null);
 	});
 
 	//Create and save new language to databse, will redirect to home page. 
@@ -66,6 +61,7 @@ module.exports = function(app){
 		} else {
 			req.session.feedback = {'success': false, 'msg': 'unable to delete ' + langName + ' from our records. Check to make sure that it is on our list of supported languages.'};
 		}
+
 		res.redirect('/');
 	});
 
@@ -74,7 +70,7 @@ module.exports = function(app){
 		res.type('text/html');
 		var langName = req.params.language;
 		console.log(langName);
-		//var langName = req.body.lang_name;
+
 		var newName = req.body.new_name;
 		var newEngine = req.body.new_engine;
 		var users = req.body.new_userNum;
