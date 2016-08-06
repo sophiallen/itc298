@@ -1,6 +1,5 @@
 var Language = require('../models/language.server.models.js');
 
-
 exports.create = function(req, res){
 	var entry = new Language({
 		//id and users are auto-generated...
@@ -9,7 +8,7 @@ exports.create = function(req, res){
 	});
 
 	entry.save(function(err, entry){
-		//this session data save isn't working... :(
+		//Save feedback to session
 		if (err){
 			req.session.feedback = {'success': false, 'msg': 'Error: unable to add ' + entry.name + 'to our records. Check to make sure it has not already been added.'};
 		} else {
@@ -19,7 +18,6 @@ exports.create = function(req, res){
 		//redirect to home page
 		res.redirect('/');
 	});
-
 };
 
 // exports.getNote = function(req, res){
