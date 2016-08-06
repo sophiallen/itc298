@@ -1,6 +1,17 @@
 var languageList = require('./../lib/languageList.js');
 var languagesCtrl = require('./../controller/transl8.server.controller.js');
 
+
+/*Function to format feedback div 
+depending on the success of the action requested.*/
+function formatFeedback(feedback){
+	return  {
+		'color': feedback.success ? 'lightgreen': 'lightpink',
+		'msg': feedback.msg
+	}
+}
+
+
 module.exports = function(app){
 	//Main page
 	app.get('/', function(req, res){
@@ -8,36 +19,26 @@ module.exports = function(app){
 		var changeData = null;
 
 		//format feedback message, if changes have occurred.
-		if (req.session.feedback){
-			var changeData = {
-				'color' : req.session.feedback.success? 'lightgreen' : 'lightpink',
-				'msg' : req.session.feedback.msg
-			};
-
-			//clear any feedback
-			req.session.feedback = null;
-		}
+		var changeData = req.session.feedback ? formatFeedback(req.session.feedback) : null;
+		//clear feedback
+		req.session.feedback = null;
 
 		//Get updated list of languages from database, render home page with updates. 
 		languagesCtrl.getLangNames(req, res, changeData);
+
+
 	});
 
 	//Detail Page
 	app.get('/languages/:lang', function(req, res){
+		//format feedback if any was given.
+		var changeData = req.session.feedback ? formatFeedback(req.session.feedback) : null;
+		
+		//clear feedback 
+		req.session.feedback = null;
 
-		var changeData = null;
-
-		//format feedback if any was given. 
-		if (req.session.feedback){
-			changeData = {
-				'color': req.session.feedback.success ? 'lightgreen': 'lightpink',
-				'msg': req.session.feedback.msg
-			}
-			req.session.feedback = null;
-		}
-
+		//Get details from db, render detail view. 
 		languagesCtrl.getDetail(req, res, req.params.lang, changeData);
-
 	});
 
 	//Search requests, redirects to detail view or back to home page with and error message.
