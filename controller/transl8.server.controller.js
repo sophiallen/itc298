@@ -23,6 +23,20 @@ exports.create = function(req, res){
 	});
 };
 
+exports.removeLang = function(req, res){
+	langName = req.params.lang.toLowerCase();
+
+	Language.remove({name: langName}, function(err){
+		if(err){
+			req.session.feedback = {'success': false, 'msg': 'Error: Unable to delete ' + langName + ' to our records.'};
+		} else {
+			req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + langName + ' from our records.'};
+		}
+
+		res.redirect('/');
+	});
+}
+
 
 exports.getLangNames = function(req, res, changeData){
 		var langNames;
@@ -36,10 +50,9 @@ exports.getLangNames = function(req, res, changeData){
 					return item.name.charAt(0).toUpperCase() + item.name.slice(1);
 				});
 		
-				//I wonder if I can change this so that rendering happens in the router... Seems like 
-				//a problem with separating concerns. 
-				res.render('home', {title: 'Main', langs: langNames, changes: changeData});
 			}
+
+			res.render('home', {title: 'Main', langs: langNames, changes: changeData});
 		});
 }
 
@@ -66,3 +79,4 @@ exports.getDetail = function(req, res, langName, changeData){
 		}
 	});
 }
+

@@ -16,17 +16,15 @@ module.exports = function(app){
 	//Main page
 	app.get('/', function(req, res){
 		res.setHeader('Content-Type', 'text/html');
-		var changeData = null;
 
 		//format feedback message, if changes have occurred.
 		var changeData = req.session.feedback ? formatFeedback(req.session.feedback) : null;
+
 		//clear feedback
 		req.session.feedback = null;
 
 		//Get updated list of languages from database, render home page with updates. 
 		languagesCtrl.getLangNames(req, res, changeData);
-
-
 	});
 
 	//Detail Page
@@ -51,19 +49,10 @@ module.exports = function(app){
 		return languagesCtrl.create(req, res);
 	});
 
-	//Delete language requests, redirect to home page with success/error message.
+	//Delete language requests, redirect to home page. Note: error/success message not working yet.
 	app.post('/languages/delete/:lang', function(req, res){
-		res.type('text/html');
-		var langName = req.params.lang;
-		var success = languageList.deleteLang(langName);
-
-		if (success){
-			req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + langName + ' from our records.'};
-		} else {
-			req.session.feedback = {'success': false, 'msg': 'unable to delete ' + langName + ' from our records. Check to make sure that it is on our list of supported languages.'};
-		}
-
-		res.redirect('/');
+		req.session.feedback = {msg: 'a test message'};
+		return languagesCtrl.removeLang(req, res);
 	});
 
 	//update requests redirect to referring page, or to newly updated language details page, with success/error message.
