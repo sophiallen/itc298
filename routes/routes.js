@@ -5,8 +5,10 @@ module.exports = function(app){
 	//Main page
 	app.get('/', function(req, res){
 		res.setHeader('Content-Type', 'text/html');
+		var changeData = null;
+
+		//format feedback message, if changes have occurred.
 		if (req.session.feedback){
-			console.log('feedback found');
 			var changeData = {
 				'color' : req.session.feedback.success? 'lightgreen' : 'lightpink',
 				'msg' : req.session.feedback.msg
@@ -14,10 +16,10 @@ module.exports = function(app){
 
 			//clear any feedback
 			req.session.feedback = null;
-		} else {
-			console.log('no feedback at this point.');
 		}
-		res.render('home', {title: 'Main', langs: languageList.getNames(), changes: changeData});
+
+		//Get updated list of languages from database, render home page with updates. 
+		languagesCtrl.getLangNames(req, res, changeData);
 	});
 
 	//Detail Page
@@ -34,7 +36,7 @@ module.exports = function(app){
 		res.render('detail', {title: lang, language: searchResult, changes: changeData});
 	});
 
-	//search requests, redirects to results or back to home page with and error message.
+	//Search requests, redirects to results or back to home page with and error message.
 	app.post('/search', function(req, res){
 		res.type('text/html');
 		var searchTerm = req.body.search_term;
@@ -48,24 +50,7 @@ module.exports = function(app){
 		}
 	});
 
-	//Add language requests, redirects back to home page with error/success message.
-	app.post('/addLang', function(req, res){
-		res.type('text/html');
-		var langName = req.body.lang_name;
-		var langEngine = req.body.engine;
-		var success = languageList.addLang(langName, langEngine);
-		var footer = '<a href="/">Return to home page.</a>'
-
-		if (success){
-			req.session.feedback = {'success': true, 'msg': 'Successfully added ' + langName + ' to our records.'};
-		} else {
-			req.session.feedback = {'success': false, 'msg': 'Error: unable to add ' + langName + 'to our records. Check to make sure it has not already been added.'};
-		}
-
-		res.redirect('/');
-	});
-
-	//create and save new language to mongodb, not sure how to implement session data with this yet. 
+	//Create and save new language to databse, will redirect to home page. 
 	app.post('/newLang', function(req, res){
 		return languagesCtrl.create(req, res);
 	});

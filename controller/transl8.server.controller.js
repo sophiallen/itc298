@@ -1,5 +1,9 @@
 var Language = require('../models/language.server.models.js');
 
+function capitalize(word){
+    return word.charAt(0).toUpperCase() + word.slice(1);
+};
+
 exports.create = function(req, res){
 	var entry = new Language({
 		//id and users are auto-generated...
@@ -20,6 +24,22 @@ exports.create = function(req, res){
 	});
 };
 
-// exports.getNote = function(req, res){
-// 	res.render()
-// }
+
+exports.getLangNames = function(req, res, changeData){
+		var langNames;
+
+		Language.find(function(err, results){
+			if(err){
+				langNames = "No languages were found in the database.";
+			} else {
+				var langNames = results.map(function(item, index){
+					//return just the name, capitalized.
+					return item.name.charAt(0).toUpperCase() + item.name.slice(1);
+				});
+		
+				//I wonder if I can change this so that rendering happens in the router... Seems like 
+				//a problem with separating concerns. 
+				res.render('home', {title: 'Main', langs: langNames, changes: changeData});
+			}
+		});
+}
