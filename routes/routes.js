@@ -5,8 +5,8 @@ module.exports = function(app){
 	//Main page
 	app.get('/', function(req, res){
 		res.setHeader('Content-Type', 'text/html');
-
 		if (req.session.feedback){
+			console.log('feedback found');
 			var changeData = {
 				'color' : req.session.feedback.success? 'lightgreen' : 'lightpink',
 				'msg' : req.session.feedback.msg
@@ -14,8 +14,9 @@ module.exports = function(app){
 
 			//clear any feedback
 			req.session.feedback = null;
+		} else {
+			console.log('no feedback at this point.');
 		}
-
 		res.render('home', {title: 'Main', langs: languageList.getNames(), changes: changeData});
 	});
 
