@@ -5,6 +5,7 @@ var languageList = require('./lib/languageList.js');
 var handlebars = require('express-handlebars');
 var session = require('express-session');
 var mongoose = require('mongoose');
+var keys = require('./keys.js');
 
 var app = new express();
 
@@ -12,12 +13,18 @@ var app = new express();
 app.set('port', process.env.PORT || 3000);
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({secret: 'taco cat'}));
+app.use(session({secret: 'taco cat', resave: false, saveUninitialized: false}));
 app.use('/api', require('cors')());
 
 //connect to mongodb
-var connectionString = 'mongodb://<username>:<password>@ds145245.mlab.com:45245/itc298';
+var connectionString = 'mongodb://' + keys.dbUserName + ':' + keys.dbPass + '@ds145245.mlab.com:45245/itc298';
 mongoose.connect(connectionString);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+  console.log("successfully connected to mongodb");
+});
 
 //set handlebars as templating engine
 var viewsPath = __dirname + '/views';

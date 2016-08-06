@@ -1,4 +1,6 @@
 var languageList = require('./../lib/languageList.js');
+var languagesCtrl = require('./../controller/transl8.server.controller.js');
+
 module.exports = function(app){
 	//Main page
 	app.get('/', function(req, res){
@@ -60,6 +62,11 @@ module.exports = function(app){
 		}
 
 		res.redirect('/');
+	});
+
+	//create and save new language to mongodb, not sure how to implement session data with this yet. 
+	app.post('/newLang', function(req, res){
+		return languagesCtrl.create(req, res);
 	});
 
 	//Delete language requests, redirect to home page with success/error message.
