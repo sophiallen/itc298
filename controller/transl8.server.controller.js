@@ -1,5 +1,14 @@
 var Language = require('../models/language.server.models.js');
 
+exports.getAll = function(req, res){
+	Language.find({}, '-_id -__v', function(err, results){
+		if (err){
+			res.status(500).send('Error: a database error occurred.');
+		} else {
+			res.json(results);
+		}
+	});
+}
 
 exports.create = function(req, res){
 	/*TODO: Validate that language being added does not pre-exist in db.*/
@@ -78,8 +87,10 @@ exports.update = function(req, res){
 
 }
 
+//gets and sends data for detail page view
 exports.getDetail = function(req, res, langName, changeData){
 	var searchTerm = langName.toLowerCase();
+
 	Language.findOne({name: searchTerm}, function(err, result){
 		if (err || !result){
 			req.session.feedback = {'success': false, 'msg' : 'Error: Unable to find ' + langName + ' in our records.'};
@@ -91,6 +102,16 @@ exports.getDetail = function(req, res, langName, changeData){
 	});
 }
 
+//gets and sends data for api detail request
+exports.getDetailData = function(req, res){
+	Language.findOne({name: req.params.lang.toLowerCase()}, '-_id -__v', function(err, result){
+		if (err || !result){
+			res.status(500).send('Database error occurred. Check that you requested a language we support.');
+		} else {
+			res.json(result);
+		}
+	});
+}
 
 function capitalize(word){
     return word.charAt(0).toUpperCase() + word.slice(1);
