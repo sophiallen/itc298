@@ -25,12 +25,13 @@ exports.create = function(req, res){
 
 exports.removeLang = function(req, res){
 	langName = req.params.lang.toLowerCase();
+	var capsLang = capitalize(langName);
 
-	Language.remove({name: langName}, function(err){
+	Language.findOneAndRemove({name: langName}, function(err){
 		if(err){
-			req.session.feedback = {'success': false, 'msg': 'Error: Unable to delete ' + langName + ' to our records.'};
+			req.session.feedback = {'success': false, 'msg': 'Error: Unable to delete ' + capsLang + ' to our records.'};
 		} else {
-			req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + langName + ' from our records.'};
+			req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + capsLang + ' from our records.'};
 		}
 
 		res.redirect('/');
@@ -56,16 +57,26 @@ exports.getLangNames = function(req, res, changeData){
 		});
 }
 
-// exports.update = function(req, res){
-// 	var condition = {name: req.params.language};
+exports.update = function(req, res){
+	var condition = {name: req.params.language.toLowerCase()};
 
-// 	var update = {
-// 		name: req.body.new_name,
-// 		engine: req.body.new_engine,
-// 		users: req.body.users
-// 	}
+	var update = {
+		name: req.body.new_name.toLowerCase(),
+		engine: req.body.new_engine,
+		users: req.body.new_userNum
+	}
 
-// }
+	Language.findOneAndUpdate(condition, update, function(err){
+		if (err){
+			req.session.feedback = {'success': false, 'msg': 'Error: Database unable to update ' + capitalize(req.params.language) +  '.'};
+			res.redirect('/languages/'+ req.params.language);
+		} else {
+			req.session.feedback = {'success': true, 'msg': 'Success: this language\'s details have been updated.'};
+			res.redirect('/languages/'+ req.body.new_name);
+		}
+	});
+
+}
 
 exports.getDetail = function(req, res, langName, changeData){
 	var searchTerm = langName.toLowerCase();
@@ -80,3 +91,7 @@ exports.getDetail = function(req, res, langName, changeData){
 	});
 }
 
+
+function capitalize(word){
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}

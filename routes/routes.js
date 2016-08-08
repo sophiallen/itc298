@@ -51,29 +51,12 @@ module.exports = function(app){
 
 	//Delete language requests, redirect to home page. Note: error/success message not working yet.
 	app.post('/languages/delete/:lang', function(req, res){
-		req.session.feedback = {msg: 'a test message'};
 		return languagesCtrl.removeLang(req, res);
 	});
 
-	//update requests redirect to referring page, or to newly updated language details page, with success/error message.
+	//Update language, redirects to updated info with error/success message.
 	app.post('/languages/update/:language', function(req, res) {
-		res.type('text/html');
-		var langName = req.params.language;
-		console.log(langName);
-
-		var newName = req.body.new_name;
-		var newEngine = req.body.new_engine;
-		var users = req.body.new_userNum;
-
-		var success = languageList.updateLang(langName, newName, newEngine, users);
-
-		if (success) {
-			req.session.feedback = {'success': true, 'msg': "This language's information has been successfully updated."};
-			res.redirect('/languages/' + newName);
-		} else {
-			req.session.feedback = {'success': false, 'msg': 'An error occurred, unable to update language details.'};
-			res.redirect('back');
-		}
+		return languagesCtrl.update(req, res);
 	});
 
 	//About the app page
