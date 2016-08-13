@@ -1,9 +1,3 @@
-// var listApp = angular.module('listApp',[]); 
-//listApp.controller('ListController', ['$scope', function($scope) { $scope.mydata = [ ];
-
-// 	// sample method $scope.myMethod = function() { // code here to update any variables referenced by the view template }; }]);
-// 	
-
 //params: name, [dependencies], 
 var listApp = angular.module('listApp', []);
 
@@ -17,7 +11,6 @@ listApp.controller('ListController', function($scope){
 		{'name': 'Stilton','price': '4.00','style': 'blue','country': 'England'},
 		{'name': 'Vlaskaas','price': '5.00','style': 'Gouda','country': 'Holland'}
 	];
-
 
 	$scope.showDetail = function(item){
 		$scope.hideDetail = false;
