@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US"> 
+<head>
+	<title>Homework #8</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script> 
+
+	<script src="js/controllers.js"></script>
+
+<!--View template. -->
+<body ng-app="listApp"> 
+	<div ng-controller="ListController">
+		<h1>What's Gouda?</h1>
+		<h2><em>Specialty Cheeses for Confused Cheese-Lovers</em></h2>
+	<div id="searchForm">
+		<label> Search for a cheese: <input type='text' ng-model="search_term"/></label>
+	</div>
+	<ul>
+		<li ng-repeat="cheese in cheeses | filter: search_term"><a ng-click="cheese.showDetails = ! cheese.showDetails">
+			<h3>{{cheese.name}} - {{cheese.price | currency}}/lb</h3>
+			<ul ng-show="cheese.showDetails">
+				<li>Style: {{cheese.style}}</li>
+				<li>Origin: {{cheese.country}}</li>
+			</ul>
+		</li></a>
+	</ul>
+	<b>Total Cheeses Available: {{cheeses.length}}</b>
+
+	<p><em>Built with helpful advice from <a href="https://www.lynda.com/AngularJS-tutorials/Using-modules-scope/154414/167521-4.html?autoplay=true">lynda.com's angular 1 intro course.</a></p>
+	</div> 
+</body>
+</html>
