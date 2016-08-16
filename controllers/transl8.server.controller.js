@@ -12,7 +12,7 @@ exports.getAll = function(req, res){
 
 exports.create = function(req, res){
 	/*TODO: Validate that language being added does not pre-exist in db.*/
-
+	console.log('langname: ' + req.body.lang_name);
 	var entry = new Language({
 		//id and users are auto-generated...
 		name: req.body.lang_name.toLowerCase(),
@@ -22,13 +22,19 @@ exports.create = function(req, res){
 	entry.save(function(err, entry){
 		//Save feedback to session
 		if (err){
-			req.session.feedback = {'success': false, 'msg': 'Error: unable to add ' + entry.name + 'to our records. Check to make sure it has not already been added.'};
+			res.json({
+				'type': 'danger',
+				'msg': 'an error occurred: unable to add ' + entry.name + 'to our database.',
+				'display': true
+			});
 		} else {
-			req.session.feedback = {'success': true, 'msg': 'Successfully added ' + entry.name + ' to our records.'};
+			res.json({
+				'type': 'success',
+				'msg': 'successfully added ' + entry.name + ' to our list of languages. Refresh this page to view updated list.',
+				'display': true
+			});
 		}
 
-		//redirect to home page
-		res.redirect('/');
 	});
 };
 

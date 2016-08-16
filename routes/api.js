@@ -1,5 +1,5 @@
 var languageList = require('./../lib/languageList.js');
-var languageCtrl = require('./../controller/transl8.server.controller.js');
+var languageCtrl = require('./../controllers/transl8.server.controller.js');
 
 module.exports = function(app){
 	app.get('/api/getlangs', function(req, res){
@@ -9,4 +9,8 @@ module.exports = function(app){
 	app.get('/api/langdetail/:lang', function(req, res){
 		languageCtrl.getDetailData(req, res);
 	})
+
+	app.post('/api/create', function(req, res){
+		languageCtrl.create(req, res);
+	});
 }

@@ -1,0 +1,40 @@
+<div class="alert alert-{{feedback.type}}" ng-show="feedback.display">{{feedback.msg}}<button class="btn btn-link pull-right" ng-click="feedback.display = false">X</button> </div> 
+<div class="row">
+<div class="col-md-5"> 
+	<h3>About Us</h3>
+	<p>Transl8 allows anyone with a text-messaging enabled phone to easily and inexpensively access online translation services. Simply text the phrase you want to translate and the desired language to our number, and our app with respond with the translation. Create an online user profile to customize your default settings for even faster and easier translation, see past translations, and create flash cards based on past translations to practice using new words!</p>
+	<button type="button" class="btn btn-primary" ng-click="newLanguage()">Add a new language &nbsp;
+		<span class="glyphicon glyphicon-plus"></span>
+	</button>
+
+	<form ng-show="showForm">
+		<legend>Add New Language</legend>
+		<div class="form-group">
+			<label>Language Name</label>
+			<input type="text" class="form-control" ng-model="newLang.lang_name"/>
+		</div>
+		<div class="form-group">
+			<label>Language Translation Engine</label>
+			<input type="text" class="form-control" ng-model="newLang.engine">
+		</div>
+		<button class="btn btn-success" type="submit" ng-click="addLang()">
+			Submit! &nbsp; <span class="glyphicon glyphicon-send"></span>
+		</button>
+	</form>
+
+</div>
+<div class="col-md-7">
+	<h3>Languages We Currently Support:</h3>
+	<em>Click on a language to view its details</em>
+	<input type="text" class="form-control" ng-model="search_term" placeholder="Search Supported Languages">
+	<ul class="list-group">
+		<li class="list-group-item" ng-repeat="lang in languages | filter: search_term track by $index" ng-click="lang.showDetail = !lang.showDetail">
+			<a ><h4>{{lang.name | capitalize}}</h4></a>
+			<ul ng-show="lang.showDetail">
+				<li><h5>Engine: {{lang.engine}}</h5></li>
+				<li><h5>Users: {{lang.users}}</h5></li>
+				<li><a href="#/languages/{{lang.name}}">Go to Detail Page</li>
+			<ul>				
+		</li>
+	</ul>
+</div>

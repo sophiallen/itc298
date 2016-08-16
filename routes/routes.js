@@ -1,5 +1,5 @@
 var languageList = require('./../lib/languageList.js');
-var languagesCtrl = require('./../controller/transl8.server.controller.js');
+var languagesCtrl = require('./../controllers/transl8.server.controller.js');
 
 
 /*Function to format feedback div 
