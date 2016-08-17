@@ -45,7 +45,7 @@ transl8App.controller('MainController', function($scope, $http, $httpParamSerial
 
 		$http.post('/api/create', $scope.newLang).then(function(response){
 			$scope.feedback = response.data;
-			
+
 			//reload list of languages
 			$http.get('/api/getLangs').then(
 				function(response){ //success callback
@@ -99,6 +99,17 @@ transl8App.controller('DetailController', function($scope, $http, $routeParams, 
 			$scope.feedback = response.data;
 			$scope.displayDetailForm = false;
 		});
+	}
+
+	$scope.deleteLang = function(){
+		var proceed = confirm('Are you sure you want to delete ' + focusLanguage +'?');
+		//var proceed = true;
+		var data = {lang: focusLanguage};
+		if (proceed){
+			$http.post('/api/delete', data).then(function(response){
+				$scope.feedback = response.data;
+			});
+		}
 	}
 });
 

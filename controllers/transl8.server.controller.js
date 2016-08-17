@@ -39,17 +39,27 @@ exports.create = function(req, res){
 };
 
 exports.removeLang = function(req, res){
-	langName = req.params.lang.toLowerCase();
+	langName = req.body.lang.toLowerCase();
 	var capsLang = capitalize(langName);
 
 	Language.findOneAndRemove({name: langName}, function(err){
 		if(err){
-			req.session.feedback = {'success': false, 'msg': 'Error: Unable to delete ' + capsLang + ' to our records.'};
+			res.json({
+				'type': 'danger',
+				'msg': 'Error: unable to delete ' + capsLang + ' from our database.',
+				'link': true,
+				'display': true
+			});
 		} else {
-			req.session.feedback = {'success': true, 'msg': 'Successfully deleted ' + capsLang + ' from our records.'};
+			res.json({
+				'type': 'success',
+				'msg': 'Successfully deleted ' + capsLang + ' from our database.',
+				'link':true,
+				'display': true
+			});
 		}
 
-		res.redirect('/');
+		
 	});
 }
 

@@ -16,5 +16,9 @@ module.exports = function(app){
 
 	app.post('/api/update', function(req, res){
 		languageCtrl.update(req, res);
+	});
+
+	app.post('/api/delete', function(req, res){
+		languageCtrl.removeLang(req, res);
 	})
 }
