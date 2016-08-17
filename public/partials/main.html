@@ -28,7 +28,7 @@
 	<em>Click on a language to view its details</em>
 	<input type="text" class="form-control" ng-model="search_term" placeholder="Search Supported Languages">
 	<ul class="list-group">
-		<li class="list-group-item" ng-repeat="lang in languages | filter: search_term track by $index" ng-click="lang.showDetail = !lang.showDetail">
+		<li class="list-group-item" ng-repeat="lang in languages | orderBy: 'name' | filter: search_term track by $index" ng-click="lang.showDetail = !lang.showDetail">
 			<a ><h4>{{lang.name | capitalize}}</h4></a>
 			<ul ng-show="lang.showDetail">
 				<li><h5>Engine: {{lang.engine}}</h5></li>

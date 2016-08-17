@@ -23,14 +23,14 @@ exports.create = function(req, res){
 		//Save feedback to session
 		if (err){
 			res.json({
-				'type': 'danger',
-				'msg': 'an error occurred: unable to add ' + entry.name + 'to our database.',
+				'type': 'info',
+				'msg': 'An error occurred: unable to add ' + capitalize(entry.name) + 'to our database.',
 				'display': true
 			});
 		} else {
 			res.json({
 				'type': 'success',
-				'msg': 'successfully added ' + entry.name + ' to our list of languages. Refresh this page to view updated list.',
+				'msg': 'Successfully added ' + capitalize(entry.name) + ' to our list of languages',
 				'display': true
 			});
 		}
@@ -73,7 +73,7 @@ exports.getLangNames = function(req, res, changeData){
 }
 
 exports.update = function(req, res){
-	var condition = {name: req.params.language.toLowerCase()};
+	var condition = {name: req.body.current_name.toLowerCase()};
 
 	var update = {
 		name: req.body.new_name.toLowerCase(),
@@ -83,14 +83,19 @@ exports.update = function(req, res){
 
 	Language.findOneAndUpdate(condition, update, function(err){
 		if (err){
-			req.session.feedback = {'success': false, 'msg': 'Error: Database unable to update ' + capitalize(req.params.language) +  '.'};
-			res.redirect('/languages/'+ req.params.language);
+			res.json({
+				'type': 'info',
+				'msg': 'Error: could not update ' + capitalize(update.name) + '\'s details.',
+				'display': true
+			});
 		} else {
-			req.session.feedback = {'success': true, 'msg': 'Success: this language\'s details have been updated.'};
-			res.redirect('/languages/'+ req.body.new_name);
+			res.json({
+				'type': 'success',
+				'msg':  capitalize(update.name) + '\'s details were successfully updated.',
+				'display': true
+			});
 		}
 	});
-
 }
 
 //gets and sends data for detail page view

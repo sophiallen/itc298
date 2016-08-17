@@ -13,4 +13,8 @@ module.exports = function(app){
 	app.post('/api/create', function(req, res){
 		languageCtrl.create(req, res);
 	});
+
+	app.post('/api/update', function(req, res){
+		languageCtrl.update(req, res);
+	})
 }
