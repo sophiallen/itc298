@@ -11,8 +11,7 @@ exports.getAll = function(req, res){
 }
 
 exports.create = function(req, res){
-	/*TODO: Validate that language being added does not pre-exist in db.*/
-	console.log('langname: ' + req.body.lang_name);
+
 	var entry = new Language({
 		//id and users are auto-generated...
 		name: req.body.lang_name.toLowerCase(),
@@ -58,8 +57,6 @@ exports.removeLang = function(req, res){
 				'display': true
 			});
 		}
-
-		
 	});
 }
 

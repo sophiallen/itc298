@@ -1,4 +1,4 @@
-<div class="alert alert-{{feedback.type}}" ng-show="feedback.display">{{feedback.msg}} <span ng-show="feedback.link"><a href="#/">&nbsp; Return to Main Page</a></span></div>
+<div class="alert alert-{{feedback.type}}" ng-show="feedback.display">{{feedback.msg}} <span ng-show="feedback.link"><a href="#/">&nbsp; Return to Main Page</a></span><button class="btn btn-link pull-right" ng-click="feedback.display = false">X</button></div>
 <h1>More About: {{language.name | capitalize}}</h1>
 <h3><em>Translation Engine:</em> {{language.engine}} </h3>
 <h3><em>Total Users:</em> {{language.users}} </h3>

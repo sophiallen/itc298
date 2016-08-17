@@ -15,6 +15,10 @@ transl8App.config(function($routeProvider){
 		.when('/languages/:langName', { //render detail page template
 			templateUrl: 'partials/detail.html',
 			controller: 'DetailController'
+		})
+		.when('/about', {
+			templateUrl: 'partials/about.html',
+			controller: 'AboutController'
 		})		 
 		.otherwise({//handle 404s by redirecting to the home page.
 			redirectTo: '/'
@@ -22,7 +26,6 @@ transl8App.config(function($routeProvider){
 });
 
 transl8App.controller('MainController', function($scope, $http, $httpParamSerializer){
-	$scope.languages = ['nothing here yet'];
 	$scope.showForm = false;
 	$scope.feedback = feedback;
 
@@ -70,8 +73,8 @@ transl8App.controller('DetailController', function($scope, $http, $routeParams, 
 		function(response){
 			console.log('Error:' + response.data);
 
-			//redirect to home page. 
-			$window.location.href= "/SPAindex.html"
+			//404, redirect to home page. 
+			$window.location.href= "/SPAindex.html#/"
 		}
 	);
 
@@ -93,8 +96,6 @@ transl8App.controller('DetailController', function($scope, $http, $routeParams, 
 				}
 			);
 
-			//refresh page to show updated language details. 
-			//$window.location.href="SPAindex.html#/languages/" + $scope.updateData.new_name;
 		}, function(response){
 			$scope.feedback = response.data;
 			$scope.displayDetailForm = false;
@@ -103,7 +104,7 @@ transl8App.controller('DetailController', function($scope, $http, $routeParams, 
 
 	$scope.deleteLang = function(){
 		var proceed = confirm('Are you sure you want to delete ' + focusLanguage +'?');
-		//var proceed = true;
+
 		var data = {lang: focusLanguage};
 		if (proceed){
 			$http.post('/api/delete', data).then(function(response){
@@ -112,6 +113,10 @@ transl8App.controller('DetailController', function($scope, $http, $routeParams, 
 		}
 	}
 });
+
+transl8App.controller('AboutController', function($scope){
+	//nothing really needed here, yet. 
+})
 
 transl8App.filter('capitalize', function() {
     return function(input) {
