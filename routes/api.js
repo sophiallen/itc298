@@ -1,4 +1,4 @@
-var languageList = require('./../lib/languageList.js');
+//var languageList = require('./../lib/languageList.js');
 var languageCtrl = require('./../controllers/transl8.server.controller.js');
 
 module.exports = function(app){

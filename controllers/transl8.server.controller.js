@@ -61,24 +61,6 @@ exports.removeLang = function(req, res){
 }
 
 
-exports.getLangNames = function(req, res, changeData){
-		var langNames;
-
-		Language.find(function(err, results){
-			if(err){
-				langNames = "No languages were found in the database.";
-			} else {
-				var langNames = results.map(function(item, index){
-					//return just the name, capitalized.
-					return item.name.charAt(0).toUpperCase() + item.name.slice(1);
-				});
-		
-			}
-
-			res.render('home', {title: 'Main', langs: langNames, changes: changeData});
-		});
-}
-
 exports.update = function(req, res){
 	var condition = {name: req.body.current_name.toLowerCase()};
 
